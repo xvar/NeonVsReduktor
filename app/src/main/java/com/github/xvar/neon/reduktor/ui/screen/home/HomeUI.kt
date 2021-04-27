@@ -1,23 +1,27 @@
-package com.github.xvar.neon.reduktor.ui.screen
+package com.github.xvar.neon.reduktor.ui.screen.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rxjava2.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.xvar.neon.reduktor.R
 import com.github.xvar.neon.reduktor.domain.navigation.Router
 import com.github.xvar.neon.reduktor.domain.navigation.action.Action
+import com.github.xvar.neon.reduktor.domain.navigation.action.ReduktorAction
+import com.github.xvar.neon.reduktor.ui.contract.ViewState
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
 
 private val buttonPadding = 32.dp
 
 @Composable
-fun Home(router: Router) {
+fun HomeUI(vm: HomeVm = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,14 +35,14 @@ fun Home(router: Router) {
         ) {
 
             ChooseButton(
-                resId = R.string.name_neon)
-            {
-                //todo
-            }
+                resId = R.string.name_neon,
+                action = { vm.consume(HomeVm.Click.NeonButton("neon title")) }
+            )
 
             ChooseButton(
                 modifier = Modifier.padding(bottom = buttonPadding),
-                resId = R.string.name_reduktor
+                resId = R.string.name_reduktor,
+                action = { vm.consume(HomeVm.Click.ReduktorButton("reduktor title")) }
             )
 
         }
@@ -67,8 +71,6 @@ private fun ChooseButton(
 @Preview
 private fun HomePreview() {
     NeonVsReduktorTheme {
-        Home(object : Router {
-            override fun handleAction(action: Action) {}
-        })
+        HomeUI()
     }
 }

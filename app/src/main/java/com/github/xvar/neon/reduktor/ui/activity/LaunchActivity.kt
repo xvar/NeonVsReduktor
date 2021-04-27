@@ -1,6 +1,7 @@
 package com.github.xvar.neon.reduktor.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -8,14 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import com.github.xvar.neon.reduktor.domain.navigation.Router
-import com.github.xvar.neon.reduktor.domain.navigation.screen.HomeScreen
+import com.github.xvar.neon.reduktor.domain.navigation.screen.AppScreen
 import com.github.xvar.neon.reduktor.ui.AppRouter
-import com.github.xvar.neon.reduktor.ui.screen.Home
+import com.github.xvar.neon.reduktor.ui.screen.home.HomeUI
+import com.github.xvar.neon.reduktor.ui.screen.home.HomeVm
+import com.github.xvar.neon.reduktor.ui.screen.neon.NeonUI
+import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorUI
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
 
 class LaunchActivity : ComponentActivity() {
@@ -34,15 +38,29 @@ class LaunchActivity : ComponentActivity() {
 @Composable
 fun Main() {
     val navController = rememberNavController()
-    val appRouter : Router = AppRouter(navController)
+    val appRouter : Router = remember { AppRouter(navController) }
+
     Box(modifier = Modifier.fillMaxSize()) {
-        val homeScreen = HomeScreen()
         NavHost(
             navController = navController,
-            startDestination = homeScreen.destination,
+            startDestination = AppScreen.Home.destination,
         ) {
-            composable(homeScreen.destination) {
-                Home(appRouter)
+            composable(AppScreen.Home.destination) {
+                HomeUI(HomeVm(appRouter).also { Log.e(
+                    "compose_debug", "vm = $it"
+                ) })
+            }
+            composable(AppScreen.Neon.destination) {
+                NeonUI()
+            }
+            composable(
+                route = AppScreen.Reduktor.destination,
+                arguments = listOf(
+                    navArgument(AppScreen.Reduktor.Args.counter) { type = NavType.IntType },
+                    navArgument(AppScreen.Reduktor.Args.title) { defaultValue = AppScreen.Reduktor.Args.defaultTitle }
+                )
+            ) {
+                ReduktorUI()
             }
         }
     }
