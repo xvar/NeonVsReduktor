@@ -3,18 +3,18 @@ package com.github.xvar.neon.reduktor.ui
 import androidx.navigation.NavController
 import androidx.navigation.compose.popUpTo
 import com.github.xvar.neon.reduktor.domain.navigation.Router
-import com.github.xvar.neon.reduktor.domain.navigation.action.Action
+import com.github.xvar.neon.reduktor.domain.navigation.event.RouteEvent
 import com.github.xvar.neon.reduktor.domain.navigation.screen.AppScreen
 import com.github.xvar.neon.reduktor.ui.screen.navigate
 
 class AppRouter(private val appNavController: NavController): Router {
 
-    override fun handleAction(action: Action) {
-        when(action.screen) {
-            is AppScreen.Home -> appNavController.navigate(action) {
+    override fun handle(routeEvent: RouteEvent) {
+        when(routeEvent.screen) {
+            is AppScreen.Home -> appNavController.navigate(routeEvent) {
                 launchSingleTop = true
             }
-            else -> appNavController.navigate(action) {
+            else -> appNavController.navigate(routeEvent) {
                 popUpTo(route = AppScreen.Home.destination) {}
             }
         }

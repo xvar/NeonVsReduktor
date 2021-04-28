@@ -1,8 +1,8 @@
-package com.github.xvar.neon.reduktor.domain.navigation.action
+package com.github.xvar.neon.reduktor.domain.navigation.event
 
 import com.github.xvar.neon.reduktor.domain.navigation.screen.AppScreen
 
-class NeonAction : Action {
+class NeonRouteEvent : RouteEvent {
     override val screen = AppScreen.Neon
     override val route: String = screen.destination
 }

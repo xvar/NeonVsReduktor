@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
 import com.github.xvar.neon.reduktor.domain.navigation.Router
+import com.github.xvar.neon.reduktor.domain.navigation.event.RouteEvent
 import com.github.xvar.neon.reduktor.domain.navigation.screen.AppScreen
 import com.github.xvar.neon.reduktor.ui.AppRouter
 import com.github.xvar.neon.reduktor.ui.screen.home.HomeUI
@@ -21,6 +26,8 @@ import com.github.xvar.neon.reduktor.ui.screen.home.HomeVm
 import com.github.xvar.neon.reduktor.ui.screen.neon.NeonUI
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorUI
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
+import com.github.xvar.neon.reduktor.ui.util.instanceDebug
+import io.reactivex.Flowable
 
 class LaunchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +44,10 @@ class LaunchActivity : ComponentActivity() {
 
 @Composable
 fun Main() {
+    //Проблема №1 - Навигация с инъекцией зависимостей
+    //Вероятно, решается через attach/detach
     val navController = rememberNavController()
-    val appRouter : Router = remember { AppRouter(navController) }
+    val appRouter : Router = remember { AppRouter(navController) }.instanceDebug("main")
 
     Box(modifier = Modifier.fillMaxSize()) {
         NavHost(
@@ -46,9 +55,10 @@ fun Main() {
             startDestination = AppScreen.Home.destination,
         ) {
             composable(AppScreen.Home.destination) {
-                HomeUI(HomeVm(appRouter).also { Log.e(
-                    "compose_debug", "vm = $it"
-                ) })
+                //Особенности composable-функций - recompose может быть вызван любое кол-во раз
+                val vm = viewModel<HomeVm>().instanceDebug("main")
+                DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
+                HomeUI(vm)
             }
             composable(AppScreen.Neon.destination) {
                 NeonUI()
@@ -63,5 +73,19 @@ fun Main() {
                 ReduktorUI()
             }
         }
+    }
+}
+
+@Composable
+@NonRestartableComposable
+private fun DisposableRouterEffect(
+    router: Router,
+    events: Flowable<RouteEvent>
+) {
+    DisposableEffect(router) {
+        val disposable = events.subscribe {
+            router.handle(it)
+        }
+        onDispose { disposable.dispose() }
     }
 }

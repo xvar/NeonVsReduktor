@@ -1,8 +1,8 @@
-package com.github.xvar.neon.reduktor.domain.navigation.action
+package com.github.xvar.neon.reduktor.domain.navigation.event
 
 import com.github.xvar.neon.reduktor.domain.navigation.screen.Screen
 
-interface Action {
+interface RouteEvent {
     val screen: Screen
     val route: String
 }

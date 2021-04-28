@@ -1,7 +1,9 @@
 package com.github.xvar.neon.reduktor.domain.navigation
 
-import com.github.xvar.neon.reduktor.domain.navigation.action.Action
+import com.github.xvar.neon.reduktor.domain.navigation.event.RouteEvent
 
 interface Router {
-    fun handleAction(action: Action)
+
+    fun handle(routeEvent: RouteEvent)
+
 }

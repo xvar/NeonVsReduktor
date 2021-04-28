@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rxjava2.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -12,16 +11,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.xvar.neon.reduktor.R
-import com.github.xvar.neon.reduktor.domain.navigation.Router
-import com.github.xvar.neon.reduktor.domain.navigation.action.Action
-import com.github.xvar.neon.reduktor.domain.navigation.action.ReduktorAction
-import com.github.xvar.neon.reduktor.ui.contract.ViewState
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
+import com.github.xvar.neon.reduktor.ui.util.instanceDebug
 
 private val buttonPadding = 32.dp
 
 @Composable
-fun HomeUI(vm: HomeVm = viewModel()) {
+fun HomeUI(
+    vm: HomeVm = viewModel()
+) {
+    vm.instanceDebug("home")
     Column(
         modifier = Modifier
             .fillMaxWidth()
