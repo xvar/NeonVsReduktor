@@ -1,7 +1,6 @@
 package com.github.xvar.neon.reduktor.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -11,6 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -25,8 +25,11 @@ import com.github.xvar.neon.reduktor.ui.screen.home.HomeUI
 import com.github.xvar.neon.reduktor.ui.screen.home.HomeVm
 import com.github.xvar.neon.reduktor.ui.screen.neon.NeonUI
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorUI
+import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVm
+import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVmNewInstanceProvider
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
 import com.github.xvar.neon.reduktor.ui.util.instanceDebug
+import com.github.xvar.neon.reduktor.ui.util.viewModelProviderFactoryOf
 import io.reactivex.Flowable
 
 class LaunchActivity : ComponentActivity() {
@@ -57,6 +60,7 @@ fun Main() {
             composable(AppScreen.Home.destination) {
                 //Особенности composable-функций - recompose может быть вызван любое кол-во раз
                 val vm = viewModel<HomeVm>().instanceDebug("main")
+                //подписка на route-events
                 DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
                 HomeUI(vm)
             }
@@ -70,7 +74,21 @@ fun Main() {
                     navArgument(AppScreen.Reduktor.Args.title) { defaultValue = AppScreen.Reduktor.Args.defaultTitle }
                 )
             ) {
-                ReduktorUI()
+                //получение параметров (вариантов вроде нет)
+                val initCounter = requireNotNull(it.arguments?.getInt(AppScreen.Reduktor.Args.counter))
+                val initTitle = it.arguments?.getString(AppScreen.Reduktor.Args.title) ?: "no title"
+
+                //можно посмотреть в сторону decompose и иерархии по SaveStateHandler
+                val ctx = LocalContext.current
+                val initData = ReduktorVm.InitData(initCounter, initTitle)
+                val vm = viewModel<ReduktorVm>(factory = viewModelProviderFactoryOf {
+                    ReduktorVmNewInstanceProvider(ctx)
+                        .get(initData)
+                    }
+                )
+
+                DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
+                ReduktorUI(vm)
             }
         }
     }

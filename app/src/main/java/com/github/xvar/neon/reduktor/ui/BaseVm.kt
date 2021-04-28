@@ -1,10 +1,10 @@
 package com.github.xvar.neon.reduktor.ui
 
 import androidx.lifecycle.ViewModel
-import com.github.xvar.neon.reduktor.ui.contract.Consumer
+import com.github.xvar.neon.reduktor.domain.contract.Consumer
 import com.github.xvar.neon.reduktor.domain.navigation.event.RouteEvent
-import com.github.xvar.neon.reduktor.ui.contract.UIEvent
-import com.github.xvar.neon.reduktor.ui.contract.ViewState
+import com.github.xvar.neon.reduktor.domain.contract.UIEvent
+import com.github.xvar.neon.reduktor.domain.contract.ViewState
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import io.reactivex.processors.PublishProcessor

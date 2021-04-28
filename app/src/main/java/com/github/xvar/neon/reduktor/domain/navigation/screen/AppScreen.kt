@@ -13,6 +13,10 @@ sealed class AppScreen : Screen {
         override val destination: String = "reduktor/${Args.counter.asParam()}?${Args.title}=${Args.title.asParam()}"
     }
 
+    object Back: AppScreen() {
+        override val destination: String = "back"
+    }
+
     object Home : AppScreen() {
         override val destination: String = "home"
     }

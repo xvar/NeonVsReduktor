@@ -1,4 +1,4 @@
-package com.github.xvar.neon.reduktor.ui.contract
+package com.github.xvar.neon.reduktor.domain.contract
 
 interface Consumer<in T> {
 

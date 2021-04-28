@@ -3,8 +3,8 @@ package com.github.xvar.neon.reduktor.ui.screen.home
 import com.github.xvar.neon.reduktor.domain.navigation.event.NeonRouteEvent
 import com.github.xvar.neon.reduktor.domain.navigation.event.ReduktorRouteEvent
 import com.github.xvar.neon.reduktor.ui.BaseVm
-import com.github.xvar.neon.reduktor.ui.contract.UIEvent
-import com.github.xvar.neon.reduktor.ui.contract.ViewState
+import com.github.xvar.neon.reduktor.domain.contract.UIEvent
+import com.github.xvar.neon.reduktor.domain.contract.ViewState
 
 class HomeVm() : BaseVm<ViewState>() {
 
@@ -12,7 +12,7 @@ class HomeVm() : BaseVm<ViewState>() {
         when(event) {
             is Click.NeonButton -> postRouteEvent(NeonRouteEvent())
             is Click.ReduktorButton -> postRouteEvent(ReduktorRouteEvent(
-                counter = (System.currentTimeMillis() % 100).toInt(),
+                counter = (System.currentTimeMillis() % 20).toInt(),
                 title = event.title
             ))
         }
