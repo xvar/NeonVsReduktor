@@ -41,6 +41,8 @@ class ReduktorVm(
         )
     }
 
+    //RedUIEvent.Init не понадобился, т.к. начальное состояние задано на момент создания store
+    //В production может быть по-другому.
     override fun consume(event: UIEvent) {
         when (event) {
             is UIBack -> store.actionConsumer.invoke(ReduktorAction.Back())
@@ -55,8 +57,6 @@ class ReduktorVm(
         compositeDisposable.clear()
         super.onCleared()
     }
-
-    class InitData(val initCounter: Int, val initText: String)
 
     sealed class RedUIEvent: UIEvent {
         /*class Init(val data: InitData): RedUIEvent()*/

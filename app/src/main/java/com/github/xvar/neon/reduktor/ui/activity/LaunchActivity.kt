@@ -24,6 +24,9 @@ import com.github.xvar.neon.reduktor.ui.AppRouter
 import com.github.xvar.neon.reduktor.ui.screen.home.HomeUI
 import com.github.xvar.neon.reduktor.ui.screen.home.HomeVm
 import com.github.xvar.neon.reduktor.ui.screen.neon.NeonUI
+import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorInitData
+import com.github.xvar.neon.reduktor.ui.screen.neon.NeonVm
+import com.github.xvar.neon.reduktor.ui.screen.neon.NeonVmNewInstanceProvider
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorUI
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVm
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVmNewInstanceProvider
@@ -50,7 +53,7 @@ fun Main() {
     //Проблема №1 - Навигация с инъекцией зависимостей
     //Вероятно, решается через attach/detach
     val navController = rememberNavController()
-    val appRouter : Router = remember { AppRouter(navController) }.instanceDebug("main")
+    val appRouter: Router = remember { AppRouter(navController) }.instanceDebug("main")
 
     Box(modifier = Modifier.fillMaxSize()) {
         NavHost(
@@ -65,26 +68,36 @@ fun Main() {
                 HomeUI(vm)
             }
             composable(AppScreen.Neon.destination) {
-                NeonUI()
+                //Забил на передачу параметров (не слишком отличается от reduktor)
+                val vm = viewModel<NeonVm>(factory = viewModelProviderFactoryOf {
+                    NeonVmNewInstanceProvider()
+                        .get()
+                }).instanceDebug("main")
+
+                DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
+                NeonUI(vm)
             }
             composable(
                 route = AppScreen.Reduktor.destination,
                 arguments = listOf(
                     navArgument(AppScreen.Reduktor.Args.counter) { type = NavType.IntType },
-                    navArgument(AppScreen.Reduktor.Args.title) { defaultValue = AppScreen.Reduktor.Args.defaultTitle }
+                    navArgument(AppScreen.Reduktor.Args.title) {
+                        defaultValue = AppScreen.Reduktor.Args.defaultTitle
+                    }
                 )
             ) {
                 //получение параметров (вариантов вроде нет)
-                val initCounter = requireNotNull(it.arguments?.getInt(AppScreen.Reduktor.Args.counter))
+                val initCounter =
+                    requireNotNull(it.arguments?.getInt(AppScreen.Reduktor.Args.counter))
                 val initTitle = it.arguments?.getString(AppScreen.Reduktor.Args.title) ?: "no title"
 
                 //можно посмотреть в сторону decompose и иерархии по SaveStateHandler
                 val ctx = LocalContext.current
-                val initData = ReduktorVm.InitData(initCounter, initTitle)
+                val initData = ReduktorInitData(initCounter, initTitle)
                 val vm = viewModel<ReduktorVm>(factory = viewModelProviderFactoryOf {
                     ReduktorVmNewInstanceProvider(ctx)
                         .get(initData)
-                    }
+                }
                 )
 
                 DisposableRouterEffect(router = appRouter, events = vm.routeEvents)

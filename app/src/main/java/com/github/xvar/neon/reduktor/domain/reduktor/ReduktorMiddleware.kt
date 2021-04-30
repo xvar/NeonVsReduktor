@@ -44,6 +44,7 @@ class ReduktorMiddleware(
         }
     }
 
+    //could be injected
     private fun loadDataObservable(stateAccessor: () -> ReduktorState) : Observable<Int> {
         return Observable.fromCallable { stateAccessor().counter + 1 }
             .delay(750, TimeUnit.MILLISECONDS)

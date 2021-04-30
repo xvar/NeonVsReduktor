@@ -4,10 +4,7 @@ import android.content.Context
 import com.github.xvar.neon.reduktor.BuildConfig
 import com.github.xvar.neon.reduktor.domain.contract.ServiceEvent
 import com.github.xvar.neon.reduktor.domain.navigation.event.RouteEvent
-import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorAction
-import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorMiddleware
-import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorReducer
-import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorState
+import com.github.xvar.neon.reduktor.domain.reduktor.*
 import com.github.xvar.neon.reduktor.ui.App
 import com.github.xvar.neon.reduktor.ui.screen.CounterViewState
 import ru.g000sha256.reduktor.Store
@@ -16,7 +13,7 @@ class ReduktorVmNewInstanceProvider(
     private val ctx: Context
 ) {
 
-    fun get(initData: ReduktorVm.InitData? = null): ReduktorVm {
+    fun get(initData: ReduktorInitData? = null): ReduktorVm {
         val app = ctx.applicationContext as App
         val mapper = ReduktorMapper()
         val schedulersHolderRx3 = app.schedulersHolderRx3

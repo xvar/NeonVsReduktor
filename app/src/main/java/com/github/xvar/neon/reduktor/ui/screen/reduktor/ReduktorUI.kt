@@ -7,6 +7,8 @@ import com.github.xvar.neon.reduktor.ui.screen.CounterViewState
 import com.github.xvar.neon.reduktor.ui.screen.common.CounterScreen
 import com.github.xvar.neon.reduktor.ui.util.instanceDebug
 
+//Дефолтный конструктор не может быть использован для корректной работы
+//Он нужен только для удобства построения preview
 @Composable
 fun ReduktorUI(vm: ReduktorVm = viewModel()) {
     vm.instanceDebug("reduktor")

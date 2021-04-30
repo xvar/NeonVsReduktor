@@ -1,9 +1,7 @@
 package com.github.xvar.neon.reduktor.domain.reduktor
 
-import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVm
-
 sealed class ReduktorAction {
-    class Init(val data: ReduktorVm.InitData) : ReduktorAction()
+    class Init(val data: ReduktorInitData) : ReduktorAction()
     class Back : ReduktorAction()
     class Increment : ReduktorAction()
     //todo add error sample

@@ -8,6 +8,7 @@ import com.github.xvar.neon.reduktor.domain.reduktor.ReduktorState
 import com.github.xvar.neon.reduktor.ui.screen.CounterViewState
 import ru.g000sha256.reduktor.Mapper
 
+//все маппинги в одном классе
 class ReduktorMapper : Mapper<ReduktorAction, ReduktorState, RouteEvent, ServiceEvent, CounterViewState> {
 
     override fun actionToRouteEvent(action: ReduktorAction): RouteEvent? {
