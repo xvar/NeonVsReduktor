@@ -56,8 +56,8 @@ dependencies {
     implementation 'com.github.g000sha256:reduktor:2.0.0'
     implementation 'com.github.g000sha256.schedulers:android:3.0.0'
     implementation 'com.github.g000sha256.schedulers:core:3.0.0'
-    implementation "com.sch.neon:neon:0.10.0"
-    implementation "com.sch.neon:neon-timber:0.10.0"
+    implementation "com.github.xvar.neon:neon:d6a337b773"
+    implementation "com.github.xvar.neon:neon-timber:d6a337b773"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
