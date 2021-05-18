@@ -50,7 +50,9 @@ class NeonVm(
     //UIEvent.Init нет, т.к. поленился передать данные в экран :)
     override fun consume(event: UIEvent) {
         when(event) {
-            is UIBack -> externalEvents.onNext(NeonAction.Back())
+            //correct way
+            is UIBack -> mainLoop.dispatch(NeonAction.Back())
+            //incorrect (though possible) :)
             is NeonUIEvent.AddCounter -> externalEvents.onNext(NeonAction.Increment())
         }
         super.consume(event)
