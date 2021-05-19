@@ -23,17 +23,11 @@ class ReduktorMiddleware(
     ): Observable<ReduktorAction> {
         return actionObservable.flatMap {
             when(it) {
-                is ReduktorAction.StartLoading -> {
-                    val state = stateAccessor()
-                    return@flatMap when {
-                        state.isLoading -> Observable.empty<ReduktorAction>()
-                        else -> loadDataObservable(stateAccessor)
-                            .map<ReduktorAction> { data -> ReduktorAction.Data(data) }
-                            .onErrorReturn { error -> ReduktorAction.Error(error) }
-                    }
-                }
                 is ReduktorAction.Increment ->
-                    return@flatMap Observable.just(ReduktorAction.StartLoading())
+                    loadDataObservable(stateAccessor)
+                        .map<ReduktorAction> { data -> ReduktorAction.Data(data) }
+                        .onErrorReturn { error -> ReduktorAction.Error(error) }
+                        .startWithItem(ReduktorAction.StartLoading())
                 //some weird "business" logic (go back on 50-th turn)
                 is ReduktorAction.Data -> return@flatMap if (it.counter % 20 == 0)
                     Observable.just(ReduktorAction.Back())
