@@ -2,6 +2,7 @@
     <string name="app_name">NeonVsReduktor</string>
     <string name="name_neon">Neon</string>
     <string name="name_reduktor">Reduktor</string>
+    <string name="name_rx_redux">RxRedux</string>
     <string name="title_activity_launch">LaunchActivity</string>
     <string name="inc_counter">Increment counter</string>
 </resources>

@@ -1,8 +1,11 @@
-# NeonVsReduktor
+# Neon Vs Reduktor Vs RxRedux
 
-### Версия №1
+### Версия №2
 
-Простой пример (counter) для сравнения двух redux-like framework'ов: [neon](https://github.com/technoir42/neon) и [reduktor](https://github.com/g000sha256/reduktor/)
+Простой пример (counter) для сравнения 3-х redux-like framework'ов: 
+[neon](https://github.com/technoir42/neon), 
+[reduktor](https://github.com/g000sha256/reduktor/),
+[rx redux](https://github.com/freeletics/RxRedux)
 
 #### Заметки по первому впечатлению:
 
@@ -15,8 +18,10 @@
 Присутствует переключение потоков на computation. 
 Не исключено, что я не понимаю замысел автора, т.к. авторского примера нет. ¯\_(ツ)_/¯
 
-4. Рекомендую принять к сравнению и [RxRedux](https://github.com/freeletics/RxRedux). 
-Она довольна близка к neon.
+4. RxRedux фокусируется на `action`, `side effect` - это alias для
+`fun effect(action : Observable<Action>, state: StateAccessor<State>) : Observable<Action>`
+Также, как и reduktor позволяет останавливать effect в зависимости от другого. Нужно помнить про
+`distinctUntilChanged` и про `Observable.empty`
 
 5. RxRedux и Reduktor имеют `stateAccessor`, neon нет
 

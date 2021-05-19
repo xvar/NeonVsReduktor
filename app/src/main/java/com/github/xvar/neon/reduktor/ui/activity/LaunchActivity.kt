@@ -30,6 +30,9 @@ import com.github.xvar.neon.reduktor.ui.screen.neon.NeonVmNewInstanceProvider
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorUI
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVm
 import com.github.xvar.neon.reduktor.ui.screen.reduktor.ReduktorVmNewInstanceProvider
+import com.github.xvar.neon.reduktor.ui.screen.rxredux.RxReduxUI
+import com.github.xvar.neon.reduktor.ui.screen.rxredux.RxReduxVm
+import com.github.xvar.neon.reduktor.ui.screen.rxredux.RxReduxVmNewInstanceProvider
 import com.github.xvar.neon.reduktor.ui.theme.NeonVsReduktorTheme
 import com.github.xvar.neon.reduktor.ui.util.instanceDebug
 import com.github.xvar.neon.reduktor.ui.util.viewModelProviderFactoryOf
@@ -102,6 +105,20 @@ fun Main() {
 
                 DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
                 ReduktorUI(vm)
+            }
+            composable(
+                route = AppScreen.RxRedux.destination,
+                arguments = listOf(
+                    navArgument(AppScreen.RxRedux.Args.counter) { type = NavType.IntType }
+                )
+            ) {
+                val initCounter =
+                    requireNotNull(it.arguments?.getInt(AppScreen.RxRedux.Args.counter))
+                val vm = viewModel<RxReduxVm>(factory = viewModelProviderFactoryOf {
+                    RxReduxVmNewInstanceProvider().get(initCounter = initCounter)
+                })
+                DisposableRouterEffect(router = appRouter, events = vm.routeEvents)
+                RxReduxUI(vm)
             }
         }
     }

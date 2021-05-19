@@ -39,9 +39,14 @@ fun HomeUI(
             )
 
             ChooseButton(
-                modifier = Modifier.padding(bottom = buttonPadding),
                 resId = R.string.name_reduktor,
                 action = { vm.consume(HomeVm.Click.ReduktorButton("reduktor title")) }
+            )
+
+            ChooseButton(
+                modifier = Modifier.padding(bottom = buttonPadding),
+                resId = R.string.name_rx_redux,
+                action = { vm.consume(HomeVm.Click.RxRedux()) }
             )
 
         }

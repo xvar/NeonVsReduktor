@@ -24,4 +24,12 @@ sealed class AppScreen : Screen {
     object Neon : AppScreen() {
         override val destination: String = "counter/neon"
     }
+
+    object RxRedux : AppScreen() {
+        object Args {
+            const val counter = "counter"
+        }
+
+        override val destination: String = "rxredux/${Args.counter.asParam()}"
+    }
 }
